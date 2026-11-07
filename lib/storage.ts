@@ -1,0 +1,4 @@
+import type { Item } from './inventory';
+function open():Promise<IDBDatabase> { return new Promise((resolve,reject)=>{const r=indexedDB.open('reown-local',1);r.onupgradeneeded=()=>r.result.createObjectStore('inventory');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);}); }
+export async function readInventory():Promise<Item[]|undefined> { const db=await open();return new Promise((resolve,reject)=>{const tx=db.transaction('inventory','readonly');const r=tx.objectStore('inventory').get('items');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);tx.oncomplete=()=>db.close();}); }
+export async function saveInventory(items:Item[]):Promise<void> {const db=await open();return new Promise((resolve,reject)=>{const tx=db.transaction('inventory','readwrite');tx.objectStore('inventory').put(items,'items');tx.oncomplete=()=>{db.close();resolve();};tx.onerror=()=>{db.close();reject(tx.error);};tx.onabort=()=>{db.close();reject(tx.error);};});}
