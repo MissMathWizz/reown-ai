@@ -25,7 +25,7 @@ Open http://127.0.0.1:3000. Checks: `npm run typecheck`, `npm test`, `npm run bu
 
 ## Storage and limits
 
-Inventory and original photo data URLs live in IndexedDB on this browser and origin. Nothing is uploaded to a server. Clearing site data removes it; private browsing and storage quotas can limit persistence. Save failures are shown and do not replace the in-memory inventory. This is a small, single-tab prototype: no account, cloud backup, synchronization, export/import, or multi-tab concurrency handling. Do not use it as your only copy of important photos. Large batches may be slow because images are not resized yet. HEIC is unsupported.
+Inventory and original photo data URLs live in IndexedDB on this browser and origin. Nothing is uploaded to a server. Clearing site data removes it; private browsing and storage quotas can limit persistence. Save failures are shown and do not replace the in-memory inventory. This is a small, single-tab prototype: no account, cloud backup, synchronization, or multi-tab concurrency handling. Do not use it as your only copy of important photos. Large batches may be slow because images are not resized yet. HEIC is unsupported.
 
 Demo images are generated SVG illustrations, not product photos. Demo item names and all marketplace templates are placeholders. No fabricated price estimates are displayed. The seven targets are eBay, Poshmark, OfferUp, Craigslist, Nextdoor, WeChat communities, and Moon BBS. Selecting a target does not imply API access or publishing support.
 
@@ -43,3 +43,5 @@ Next.js setup follows the [official App Router installation guide](https://nextj
 ## Verification in the build environment
 
 Production build, TypeScript check, and all four domain tests passed. Browser-based end-to-end verification remains pending: the embedded browser navigation timed out, and local dev watchers hit macOS file-watch limits. Scripts use Webpack because Turbopack could not start an FSEvent stream in this environment. If development reports `EMFILE`, try `WATCHPACK_POLLING=true npm run dev`, or use the production preview, which does not need file watching.
+
+Use **Download backup** to save all records and photos as a JSON file. **Restore backup** validates the file and asks before replacing the inventory. The backup contains your original photos in readable form.

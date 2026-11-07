@@ -10,7 +10,7 @@ Single person, one local browser, small inventory, English UI. USD may be a futu
 
 Implemented: responsive upload/drop zone, file type/size/count validation and image decoding; gallery with search and status filters; item editor; photo counts; manual photo grouping; Keep/Sell/Donate; local persistence; delete confirmation; local save feedback; placeholder listing preview for all target marketplaces.
 
-Not implemented: automatic grouping, product identification, embeddings, similarity search, secondhand appraisal, real listing generation, marketplace authentication, posting, shipping, payments, messaging, accounts, synchronization, export/import, and production hosting.
+Not implemented: automatic grouping, product identification, embeddings, similarity search, secondhand appraisal, real listing generation, marketplace authentication, posting, shipping, payments, messaging, accounts, synchronization and production hosting.
 
 ## Acceptance flows
 
@@ -31,10 +31,12 @@ Only build publishing through a verified, permitted official integration. Before
 ## Proposed milestones
 
 1. Local foundation (this MVP): manual inventory and grouping, persistence, placeholder adapters.
-2. Reliability: image resizing, import/export, richer accessible dialog focus behavior, browser end-to-end coverage, quota reporting, concurrent-tab protection, license choice.
+2. Reliability: image resizing, backup round-trip coverage, richer accessible dialog focus behavior, browser end-to-end coverage, quota reporting, concurrent-tab protection, license choice.
 3. Assisted perception: opt-in vision adapter, grouping suggestions with undo, product candidates and confidence, embeddings/retrieval with evidence. Evaluate physical-instance grouping precision and correction rate.
 4. Valuation: dated sold comparables, currency/region/condition adjustments, ranges, uncertainty, source attribution. Evaluate against actual sold prices; do not substitute asking prices silently.
 5. Listing drafts: researched schemas per marketplace, editable drafts, validation, preview, copy/export, user approval.
 6. Permitted integrations: official API verification, OAuth and secure token storage, explicit publish confirmation, audit trail, idempotency, rate limits, revocation, account isolation.
 
 Success for the MVP means an owner can add, correct, find, classify, and reload their items without losing photos. Future metrics include grouping accuracy, identification confidence calibration, valuation error, and time to a reviewed listing.
+
+Local backups include every record and its photos. Restore validates the version, fields, photo references and unique IDs before requesting confirmation to replace local inventory.
