@@ -1,6 +1,6 @@
 export type Status = 'Keep' | 'Sell' | 'Donate';
 export type Photo = { id: string; name: string; src: string };
-export type Item = { id: string; title: string; category: string; brand: string; condition: string; notes: string; status: Status; photos: Photo[]; demo?: boolean };
+export type Item = { productUrl?: string; sales?: {market: Marketplace; price: string; currency: string; url: string}[]; id: string; title: string; category: string; brand: string; condition: string; notes: string; status: Status; photos: Photo[]; demo?: boolean };
 export const markets = ['eBay', 'Poshmark', 'OfferUp', 'Craigslist', 'Nextdoor', 'WeChat communities', 'Moon BBS'] as const;
 export type Marketplace = typeof markets[number];
 export function movePhotos(items: Item[], sourceId: string, targetId: string, photoIds: string[]): Item[] {
