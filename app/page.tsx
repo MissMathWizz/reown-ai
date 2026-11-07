@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { draft, markets, movePhotos, splitPhotos, type Item, type Marketplace, type Photo, type Status } from '../lib/inventory';
+import { parseBackup } from '../lib/backup';
 import { readInventory, saveInventory } from '../lib/storage';
 const statuses:Status[]=['Keep','Sell','Donate'];
 function blank(photos:Photo[]):Item{return {id:crypto.randomUUID(),title:'Untitled item',category:'Uncategorized',brand:'',condition:'Good',notes:'',status:'Keep',photos};}
@@ -23,27 +24,14 @@ export default function Home(){
    setTimeout(() => URL.revokeObjectURL(url), 1000);
  }
  async function restoreBackup(file?: File) {
-   if (!file) return;
+   if (!file || busy) return;
+   setBusy(true);
    try {
-     const backup = JSON.parse(await file.text());
-     const ids = new Set<string>();
-     function unique(id: unknown) {
-       if (typeof id !== 'string' || !id || ids.has(id)) return false;
-       ids.add(id);
-       return true;
-     }
-     if (backup?.version !== 1 || !Array.isArray(backup.items) ||
-       !backup.items.every((item: Item) => item && unique(item.id) &&
-         [item.title,item.brand,item.condition,item.category,item.notes].every(value => typeof value === 'string') &&
-         statuses.includes(item.status) && Array.isArray(item.photos) && item.photos.length &&
-         item.photos.every(photo => photo && unique(photo.id) && typeof photo.name === 'string' &&
-           typeof photo.src === 'string' && /^data:image\/(jpeg|png|webp|svg\+xml)[;,]/i.test(photo.src)))) {
-       throw new Error('Invalid backup');
-     }
+     const restored = parseBackup(await file.text());
      if (window.confirm('Replace this browser inventory with the items and photos in this backup?')) {
-       await commit(backup.items);
+       await commit(restored);
      }
-   } catch { setNotice('Could not restore this file. Choose a Reown JSON backup.'); }
+   } catch { setNotice('Could not restore this file. Choose a Reown JSON backup.'); } finally { setBusy(false); }
  }
  const visible=items.filter(i=>(filter==='All'||i.status===filter)&&`${i.title} ${i.brand} ${i.category}`.toLowerCase().includes(query.toLowerCase()));
  function open(id:string){setActive(id);setChosen([]);setTarget('');}
